@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     //TODO: Attributes
     public Animator _animator;
@@ -74,4 +74,13 @@ public class PlayerController : MonoBehaviour
             _animator.transform.forward = direction;
         }
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent<Coin>(out Coin coin))
+        {
+            coin.Collect();
+        }
+    }
+    
 }
