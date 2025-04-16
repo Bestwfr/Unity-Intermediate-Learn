@@ -20,4 +20,10 @@ public class GameManager : Singleton<GameManager>
             OnMoneyChanged.Invoke(_money);
         }
     }
+
+    [ContextMenu("Debug Money")]
+    public void DebugCurrentMoney()
+    {
+        Debug.Log($"Current money: {_money}");
+    }
 }

@@ -54,6 +54,9 @@ public class PlayerController : Singleton<PlayerController>
     // TODO: Make it easier to read
     void FixedUpdate()
     {
+        
+        _speed = _isRunning ? _runSpeed : _walkSpeed;
+        
         Vector3 movement = new Vector3(_movementInput.x, 0, _movementInput.y);
         movement *= _speed * 0.1f;
         transform.Translate(movement, Space.Self);
@@ -77,9 +80,9 @@ public class PlayerController : Singleton<PlayerController>
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Coin>(out Coin coin))
+        if (collision.gameObject.TryGetComponent<ICollectable>(out ICollectable item))
         {
-            coin.Collect();
+            item.Collect();
         }
     }
     
