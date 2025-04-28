@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0edab458d4ee27f4c939c94d8bc874f0, type: 3}
+  m_Name: Pichu
+  m_EditorClassIdentifier: 
+  Name: Pichu
+  Description: This is the goat
+  ElementalType: 3
+  Cost: -1
+  Health: 99
+  ATK: 99
+  CharacterImage: {fileID: 21300000, guid: 03bd6758fac28d64b8b86bb522e7c6b1, type: 3}
