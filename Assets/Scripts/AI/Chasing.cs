@@ -19,11 +19,15 @@ public class Chasing : State
     {
         Agent.SetDestination(EnemyClass.target.position); // constantly update path
 
-        if (Agent.remainingDistance <= EnemyClass.atkRange)
+        if (EnemyClass.isScared)
+        {
+            NextState = new Scared(EnemyClass, Agent);
+            Stage = EVENT.EXIT;
+        }
+        else if (Agent.remainingDistance <= EnemyClass.atkRange)
         {
             NextState = new Battle(EnemyClass, Agent);
             Stage = EVENT.EXIT;
         }
     }
-    
 }

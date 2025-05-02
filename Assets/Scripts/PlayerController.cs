@@ -1,9 +1,22 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : Character
 {
     private static PlayerController _instance;
+    
+    public bool invincibility = false;
+    
+    [SerializeField] GameObject playerPrefab;
+    
+    [Header("Gun Settings")]
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private float bulletSpeed = 20f;
+    [SerializeField] private float fireRate = 0.2f;
+
+    private Coroutine _shootCoroutine;
 
     public static PlayerController Instance
     {
@@ -95,12 +108,60 @@ public class PlayerController : Character
             _animator.transform.forward = direction;
         }
     }
+    
+    public void GainInvincibility(float duration = 2f)
+    {
+        if (!invincibility)
+            StartCoroutine(InvincibilityRoutine(duration));
+    }
+
+    private IEnumerator InvincibilityRoutine(float duration)
+    {
+        invincibility = true;
+        
+        yield return new WaitForSeconds(duration);
+
+        invincibility = false;
+    }
+    
+    private IEnumerator AutoShootWhileInvincible()
+    {
+        while (invincibility)
+        {
+            ShootTowardMouse();
+            yield return new WaitForSeconds(fireRate);
+        }
+    }
+    
+    private void ShootTowardMouse()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            Vector3 targetPos = hit.point;
+        
+            // Flatten the direction to ignore vertical aiming (Y axis)
+            Vector3 direction = (targetPos - firePoint.position);
+            direction.y = 0; // Remove vertical component
+            direction = direction.normalized;
+
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(direction));
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            rb.velocity = direction * bulletSpeed;
+        }
+    }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<ICollectable>(out ICollectable item))
+        if (collision.gameObject.TryGetComponent<ICollectable>(out ICollectable interactable))
         {
-            item.Collect();
+            
+            interactable.Collect();
+            if (collision.gameObject.TryGetComponent<Item>(out Item power))
+            {
+                GainInvincibility();
+            }
+            if (collision.gameObject.CompareTag("Gun")){_shootCoroutine = StartCoroutine(AutoShootWhileInvincible());}
         }
     }
     

@@ -21,7 +21,8 @@ public class State
         IDLE,
         ROAMING,
         CHASING, // if found player chase it
-        BATTLE  // if in range Attack player (can use Debug first)
+        BATTLE,  // if in range Attack player (can use Debug first)
+        SCARED
     }
 
     /// <summary>
