@@ -71,9 +71,9 @@ public class Enemy : Character
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                
+                gameObject.SetActive(false);
                 transform.position = _spawnPoint.transform.position;
-                
+                gameObject.SetActive(true);
                 isScared = false;
                 _enemyPrefab.GetComponent<MeshRenderer>().material = _originalMaterial;
             }
